@@ -1,8 +1,11 @@
 {
   "name": "yare",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Yet Another Router for Express.js",
   "main": "index.js",
+  "keywords": [
+      "express"
+  ],
   "scripts": {
     "test": "make test"
   },
