@@ -98,4 +98,21 @@ describe('Router', function () {
 		.get('/bar/baz')
 		.expect('foo&bar&baz', done)
 	})
+	
+	it("should be able to lookup parent views", function (done) {
+		var app = require('./dummy/app'),
+			done = pending(3, done)
+			
+			request(app)
+			.get('/')
+			.expect('test', done)
+			
+			request(app)
+			.get('/a')
+			.expect('test', done)
+			
+			request(app)
+			.get('/a/b')
+			.expect('test', done)
+	})
 })
