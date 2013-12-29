@@ -16,16 +16,26 @@ describe('Router', function () {
 		}
 		var args = extractable(1, 2, 3, 4);
 		
-		assert.equal(args.path, 1)
-		assert.equal(args.fn, 4)
-		assert.equal(args.middleware, [2,3].toString())
+		assert.equal(args.path, 1);
+		assert.equal(args.fn, 4);
+		assert.equal(args.middleware, [2,3].toString());
 		done()
 	})
 	
-	it('should return draw', function (done) {
+	it('should have __appGetter__', function (done) {
+		var router = new Router();
+		Router.__appGetter__('test_app');
+		assert.equal(router._app, router.test_app);
+		
+		delete Router.prototype.test_app;
+		done()
+	})
+	
+	it('should return _app with draw and app getters', function (done) {
 		var router = new Router();
 		
-		assert.equal(router._app, router.draw)
+		assert.equal(router._app, router.draw);
+		assert.equal(router._app, router.app);		
 		done()
 	})
 	
@@ -35,11 +45,11 @@ describe('Router', function () {
 			done = pending(2, done);
 
 	    app.get('/one', function(req, res){
-	      res.send('GET one');
+	      res.send('GET one')
 	    });
 	
 	    app.get('/some/two', function(req, res){
-	      res.send('GET two');
+	      res.send('GET two')
 	    });
 	
 	    request(app)
@@ -48,7 +58,7 @@ describe('Router', function () {
 	
 	    request(app)
 	    .get('/some/two')
-	    .expect('GET two', done);
+	    .expect('GET two', done)
 	})
 	
 	it('should be able to take an express app and mount itself', function (done) {
@@ -59,7 +69,8 @@ describe('Router', function () {
 			this.get('/b', function (req, res) {
 				res.send('b')
 			})
-		})
+		});
+		
 		request(app)
 		.get('/a/b')
 		.expect('b', done)
@@ -93,7 +104,7 @@ describe('Router', function () {
 			this.get('/baz', loadBaz, function (req, res) {
 				res.send([req.foo,req.bar,req.baz].join('&'))
 			})
-		})
+		});
 		request(app)
 		.get('/bar/baz')
 		.expect('foo&bar&baz', done)
@@ -101,18 +112,18 @@ describe('Router', function () {
 	
 	it("should be able to lookup parent views", function (done) {
 		var app = require('./dummy/app'),
-			done = pending(3, done)
+			done = pending(3, done);
 			
-			request(app)
-			.get('/')
-			.expect('test', done)
-			
-			request(app)
-			.get('/a')
-			.expect('test', done)
-			
-			request(app)
-			.get('/a/b')
-			.expect('test', done)
+		request(app)
+		.get('/')
+		.expect('test', done);
+		
+		request(app)
+		.get('/a')
+		.expect('test', done);
+		
+		request(app)
+		.get('/a/b')
+		.expect('test', done)
 	})
 })

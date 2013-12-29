@@ -1,6 +1,6 @@
 {
   "name": "yare",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Yet Another Router for Express.js",
   "main": "index.js",
   "keywords": [
